@@ -9,6 +9,7 @@ namespace KinematicCharacterController.Examples
     public enum CharacterState
     {
         Default,
+        //Grapple,
     }
 
     public enum OrientationMethod
@@ -70,6 +71,12 @@ namespace KinematicCharacterController.Examples
         public float friction = 1.2f;
         public float boost = 2f;
         public float longJump = 15f;
+
+        // [Header("Grappling")]
+        // public float grappleSpeed = 20f;
+        // public float maxDistance = 100f;
+        // public Vector3 grapplePoint;
+        // public bool isGrappling = false;
 
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
@@ -208,7 +215,7 @@ namespace KinematicCharacterController.Examples
                             if(!_isSliding) {
                                 _isSliding = true;
                                 Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
-                                MeshRoot.localScale = new Vector3(2f, 0.25f, 2f);
+                                MeshRoot.localScale = new Vector3(2f, 0.5f, 2f);
                                 slopeAngle = Motor.MaxStableSlopeAngle;
                                 Motor.MaxStableSlopeAngle = 0f;
                             }
@@ -490,6 +497,19 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
+                // case CharacterState.Grapple: 
+                //     {
+                //         Debug.Log("Grapple");
+                //         transform.position = Vector3.MoveTowards(transform.position, grapplePoint, grappleSpeed);
+                //         if(transform.position == grapplePoint) {
+                //             Debug.Log("Trigger");
+                //             TransitionToState(CharacterState.Default);
+                //             isGrappling = false;
+                //         }
+
+                //         break;
+                //     }
+                
             }
         }
 
@@ -636,6 +656,14 @@ namespace KinematicCharacterController.Examples
                 UpdateVelocity(ref stop, 0f);
             }
         }
+
+        // public void zipTo(Vector3 target) {
+        //     if(Vector3.Distance(target, transform.position) < maxDistance) {
+        //         grapplePoint = target;
+        //         TransitionToState(CharacterState.Grapple);
+        //         isGrappling = true;
+        //     }
+        // }
 
         protected void OnLeaveStableGround()
         {
